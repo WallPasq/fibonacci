@@ -1,0 +1,30 @@
+[project]
+name = "fibonacci"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.poe]
+verbosity = -1
+
+[tool.poe.tasks.run]
+help = "Run the script with a specific interpreter: pypy (PyPy 3) or cpython (CPython 3). Default is pypy."
+shell = """
+if [ "$interpreter" = "pypy" ] || [ -z "$interpreter" ]; then
+    echo "Running with PyPy 3...\n"
+    uv run --python pypy3 src/main.py
+elif [ "$interpreter" = "cpython" ]; then
+    echo "Running with CPython 3...\n"
+    uv run --python cpython3 src/main.py
+else
+    echo "Error: Unknown interpreter '$interpreter'. Use 'pypy' or 'cpython'."
+    exit 1
+fi
+"""
+
+[[tool.poe.tasks.run.args]]
+name = "interpreter"
+positional = true
+help = "The interpreter to use to run the script: pypy (PyPy 3) or cpython (CPython 3). Default is pypy."
